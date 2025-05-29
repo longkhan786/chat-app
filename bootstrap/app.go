@@ -1,13 +1,16 @@
 package bootstrap
 
 import (
+	"database/sql"
 	"log"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 )
 
 type Application struct {
 	Env  *Env
+	DB   *sql.DB
 }
 
 type Env struct {
@@ -46,10 +49,25 @@ func newEnv() *Env {
 	return &env
 }
 
+func newDatabase(Env *Env) *sql.DB {
+
+	db, err := sql.Open("mysql", Env.DBUser+":"+Env.DBPass+"@tcp("+Env.DBHost+":"+Env.DBPort+")/"+Env.DBName)
+	if err != nil {
+		log.Fatal("Database connection error: ", err)
+	}
+	
+	err = db.Ping()
+	if err != nil {
+		log.Fatal("Database ping error: ", err)
+	}
+	
+	return db
+}
 
 func App() Application {
 	app := &Application{}
 	app.Env = newEnv()
+	app.DB = newDatabase(app.Env)
 	return *app
 }
 
