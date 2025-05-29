@@ -18,7 +18,7 @@ GoChat is an in-progress real-time chat application built with Go. The goal is t
 
 - **Go** `v1.22`
 - **Gin** - HTTP Web Framework
-- **golang-migrate** - Database migrations
+- **Golang-migrate** - Database migrations
 - **Viper** - Configuration management
 - **WebSocket** - Real-time communication (planned/ongoing)
 - **Docker** (coming soon)
@@ -35,4 +35,4 @@ GoChat is an in-progress real-time chat application built with Go. The goal is t
 
 ```bash
 git clone https://github.com/longkhan786/chat-app.git
-cd gochat
+cd chat-app
