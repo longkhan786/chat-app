@@ -1,8 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"time"
 
+	"github.com/gin-gonic/gin"
+	"github.com/longkhan786/chat-app/api/route"
 	"github.com/longkhan786/chat-app/bootstrap"
 )
 
@@ -11,7 +13,14 @@ func main()  {
 	
  	env := app.Env
 	db := app.DB
-	
-	fmt.Println("App Environment:", env.AppEnv)
-	fmt.Println("Database Connection:", db)
+
+	defer db.Close()
+
+	timeout := time.Duration(env.ContextTimeout) * time.Second
+
+	gin := gin.Default()
+
+	route.Setup(env, timeout, db, gin)
+
+	gin.Run(env.ServerAddress)
 }
