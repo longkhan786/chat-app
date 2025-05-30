@@ -10,4 +10,5 @@ import (
 
 func Setup(env *bootstrap.Env, timeout time.Duration, db *sql.DB, gin *gin.Engine) {
 	
+	publicRouter := gin.Group("")
 }

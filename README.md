@@ -21,7 +21,7 @@ GoChat is an in-progress real-time chat application built with Go. The goal is t
 - **Golang-migrate** - Database migrations
 - **Viper** - Configuration management
 - **WebSocket** - Real-time communication (planned/ongoing)
-- **Docker** (coming soon)
+- **Docker**
 
 ---
 
