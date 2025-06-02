@@ -10,10 +10,11 @@ import (
 )
 
 func NewSignupRouter(env *bootstrap.Env, timeout time.Duration, db *sql.DB, group *gin.RouterGroup) {
-
-	sc := controller.SignupController{
-		Env: env,
-	}
-	
+	group.GET("/", func (c *gin.Context) {
+		c.JSON(200, gin.H{
+			"message": "Welcome",
+		})
+	})
+	sc := controller.SignupController{Env: env}
 	group.POST("/signup", sc.Signup)
 }

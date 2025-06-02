@@ -9,5 +9,5 @@ import (
 )
 
 func Setup(env *bootstrap.Env, timeout time.Duration, db *sql.DB, gin *gin.Engine) {
-	
+	NewSignupRouter(env, timeout, db, gin.Group("/api/v1"))
 }
