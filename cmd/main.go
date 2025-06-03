@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +14,12 @@ func main()  {
  	env := app.Env
 	db := app.DB
 
-	defer db.Close()
-
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
+	
 	timeout := time.Duration(env.ContextTimeout) * time.Second
 
 	gin := gin.Default()
-	fmt.Println("Registering /api/v1/signup route") // 👈 add this
 
 	route.Setup(env, timeout, db, gin)
 

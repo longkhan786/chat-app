@@ -1,16 +1,16 @@
 package bootstrap
 
 import (
-	"database/sql"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 type Application struct {
 	Env  *Env
-	DB   *sql.DB
+	DB   *gorm.DB
 }
 
 type Env struct {
@@ -49,18 +49,24 @@ func newEnv() *Env {
 	return &env
 }
 
-func newDatabase(Env *Env) *sql.DB {
+func newDatabase(env *Env) *gorm.DB {
+	dsn := env.DBUser + ":" + env.DBPass + "@tcp(" + env.DBHost + ":" + env.DBPort + ")/" + env.DBName + "?charset=utf8mb4&parseTime=True&loc=Local"
 
-	db, err := sql.Open("mysql", Env.DBUser+":"+Env.DBPass+"@tcp("+Env.DBHost+":"+Env.DBPort+")/"+Env.DBName)
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatal("Database connection error: ", err)
+		log.Fatal("Failed to connect to database: ", err)
 	}
-	
-	err = db.Ping()
+
+	sqlDB, err := db.DB()
+	if err != nil {
+		log.Fatal("Failed to get underlying DB: ", err)
+	}
+
+	err = sqlDB.Ping()
 	if err != nil {
 		log.Fatal("Database ping error: ", err)
 	}
-	
+
 	return db
 }
 
