@@ -12,6 +12,10 @@ type UserController struct {
 	Db            *gorm.DB
 }
 
+type MessageRequest struct {
+	Message string `json:"message"`
+}
+
 func (uc *UserController) Signup(c *gin.Context) {
 
 	c.JSON(200, gin.H{
@@ -20,8 +24,14 @@ func (uc *UserController) Signup(c *gin.Context) {
 }
 
 func (uc *UserController) SendMessage(c *gin.Context) {
+	
+	var req MessageRequest
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
 
-	message := c.PostForm("message")
+	message := req.Message
 
 	userMessage := model.UserMessage{
 		SenderID:  	1,
@@ -30,7 +40,6 @@ func (uc *UserController) SendMessage(c *gin.Context) {
 	}
 
 	db := uc.Db
-
 	db.Create(&userMessage)
 	db.Preload("Sender").Preload("Receiver").First(&userMessage, userMessage.ID)
 	
