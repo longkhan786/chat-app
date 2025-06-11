@@ -8,6 +8,7 @@ import (
 	"github.com/longkhan786/chat-app/bootstrap"
 )
 
+var jwtSecret = []byte("secret")
 func main()  {
 	app := bootstrap.App()
 	
@@ -21,7 +22,7 @@ func main()  {
 
 	gin := gin.Default()
 
-	route.Setup(env, timeout, db, gin)
+	route.Setup(env, timeout, db, gin, jwtSecret)
 
 	gin.Run(env.ServerAddress)
 }
