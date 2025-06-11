@@ -48,3 +48,19 @@ func (uc *UserController) SendMessage(c *gin.Context) {
 		"data":    userMessage,
 	})
 }
+
+func (uc *UserController) FetchMessages(c *gin.Context) {
+	
+	var messages []model.UserMessage
+	db := uc.Db
+
+	if err := db.Preload("Sender").Preload("Receiver").Find(&messages).Error; err != nil {
+		c.JSON(500, gin.H{"error": "Failed to fetch messages"})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"status": true,
+		"data": messages,
+	})
+}

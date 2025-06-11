@@ -9,12 +9,20 @@ export const useUserService = () => {
   };
 
   const sendMessage = async (params: object) => {
-    // Send a message to the API
     return await API.post('/user/sendMessage', params);
   };
+
+  const fetchMessages = async () => {
+    return await API.get('/user/fetchMessages')
+    .then((response) => {
+      return response.data
+    })
+  };
+
 
   return {
     getUsers,
     sendMessage,
+    fetchMessages
   };
 };
