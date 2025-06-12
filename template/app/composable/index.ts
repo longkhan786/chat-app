@@ -1,1 +1,0 @@
-export { useUserService } from './UserServiceClass';
