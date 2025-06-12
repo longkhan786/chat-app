@@ -20,5 +20,5 @@ func Setup(env *bootstrap.Env, timeout time.Duration, db *gorm.DB, gin *gin.Engi
 
 func checkMiddleware(gin *gin.Engine, jwtSecret []byte) {
 	gin.Use(middleware.CORSMiddleware())
-	gin.Use(middleware.AuthMiddleware(jwtSecret))
+	//gin.Use(middleware.AuthMiddleware(jwtSecret))
 }
