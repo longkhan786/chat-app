@@ -64,3 +64,15 @@ func (uc *UserController) FetchMessages(c *gin.Context) {
 		"data": messages,
 	})
 }
+
+func (uc *UserController) FetchUsers(c *gin.Context) {
+
+	db := uc.Db
+	var users []model.User
+	db.Find(&users)
+
+	c.JSON(200, gin.H{
+		"status": true,
+		"data": users,
+	})
+}

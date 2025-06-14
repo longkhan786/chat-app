@@ -6,7 +6,15 @@ export const useUserService = () => {
         return await api.post("user/sendMessage",  data);
     };
 
+    const getUsers = async () => {
+        return await api.get("user/users")
+        .then((response) => {
+            return response.data
+        })
+    };
+
     return {
         sendMessage,
+        getUsers
     };
 };

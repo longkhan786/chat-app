@@ -24,4 +24,5 @@ func NewUserRouter(env *bootstrap.Env, timeout time.Duration, db *gorm.DB, group
 	group.POST("/signup", uc.Signup)
 	group.POST("/sendMessage", uc.SendMessage)
 	group.GET("/fetchMessages", uc.FetchMessages)
+	group.GET("/users", uc.FetchUsers)
 }
