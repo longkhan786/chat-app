@@ -14,7 +14,6 @@ func Setup(env *bootstrap.Env, timeout time.Duration, db *gorm.DB, gin *gin.Engi
 
 	//gin.GET("ws", ws.Setup())
 	
-	NewAuthRouter(env, timeout, db, gin, jwtSecret)
 	NewUserRouter(env, timeout, db, gin.Group("/api/user"))
 }
 
