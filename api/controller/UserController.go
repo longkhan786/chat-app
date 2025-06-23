@@ -13,8 +13,8 @@ import (
 )
 
 type UserController struct {
-	Env           *bootstrap.Env
-	Db            *gorm.DB
+	Env *bootstrap.Env
+	Db  *gorm.DB
 }
 
 type MessageRequest struct {
@@ -22,9 +22,9 @@ type MessageRequest struct {
 }
 
 type SignupRequest struct {
-	Username string `json:"username" binding:"required"`
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
+	Username     string `json:"username" binding:"required"`
+	Email        string `json:"email" binding:"required,email"`
+	Password     string `json:"password" binding:"required,min=6"`
 	MobileNumber string `json:"mobileNumber" binding:"required,min=6"`
 }
 
@@ -32,7 +32,6 @@ type LoginRequest struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
-
 
 func (uc *UserController) Login(c *gin.Context) {
 	var req LoginRequest
@@ -75,7 +74,6 @@ func (uc *UserController) Login(c *gin.Context) {
 	})
 }
 
-
 func (uc *UserController) Signup(c *gin.Context) {
 	var req SignupRequest
 
@@ -91,10 +89,10 @@ func (uc *UserController) Signup(c *gin.Context) {
 	}
 
 	user := model.User{
-		Username: req.Username,
-		Email:    req.Email,
+		Username:     req.Username,
+		Email:        req.Email,
 		PasswordHash: string(hashedPassword),
-		Status: 1,
+		Status:       1,
 		MobileNumber: req.MobileNumber,
 	}
 
@@ -123,7 +121,7 @@ func (uc *UserController) Signup(c *gin.Context) {
 }
 
 func (uc *UserController) SendMessage(c *gin.Context) {
-	
+
 	var req MessageRequest
 	if err := c.BindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": "Invalid request"})
@@ -133,15 +131,15 @@ func (uc *UserController) SendMessage(c *gin.Context) {
 	message := req.Message
 
 	userMessage := model.UserMessage{
-		SenderID:  	1,
+		SenderID:   1,
 		ReceiverID: 2,
-		Content:   	message,
+		Content:    message,
 	}
 
 	db := uc.Db
 	db.Create(&userMessage)
 	db.Preload("Sender").Preload("Receiver").First(&userMessage, userMessage.ID)
-	
+
 	c.JSON(200, gin.H{
 		"message": "Message sent successfully",
 		"data":    userMessage,
@@ -149,7 +147,7 @@ func (uc *UserController) SendMessage(c *gin.Context) {
 }
 
 func (uc *UserController) FetchMessages(c *gin.Context) {
-	
+
 	var messages []model.UserMessage
 	db := uc.Db
 
@@ -160,7 +158,7 @@ func (uc *UserController) FetchMessages(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"status": true,
-		"data": messages,
+		"data":   messages,
 	})
 }
 
@@ -172,6 +170,6 @@ func (uc *UserController) FetchUsers(c *gin.Context) {
 
 	c.JSON(200, gin.H{
 		"status": true,
-		"data": users,
+		"data":   users,
 	})
 }
